@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product selling</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <title>Product selling</title>
+    <style>
+        body {
+            background-image: url('/static/background2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+        }
+        .divcolor {
+            background-color: rgb(110, 143, 57);
+        }
+        .btn-primary-right {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 20px;
+        }
+        .custom-button {
+            width: 100px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+        .card {
+            width: 390px;
+            height: 390px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light divcolor">
+        <div class="container-fluid">
+            <span class="navbar-text font-weight-bold text-dark">Admin Dashboard</span>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="color: blue;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <br><br>
+        <div class="row">
+            <!-- Add loop here -->
+            {% for productcategory in productCategories %}
+            {% if productcategory.productcategory_isdeleted == 0%}
+            <div class="col-md-4">
+                <div class="card mb-4" style="background-color: rgb(167, 215, 203);">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ productcategory.productcategory_name }}</h5>
+                    </div>
+                    <div class="card-body" style="height: 200px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush" style="background-color: rgb(182, 204, 220);"></ul>
+                            {% for product in productcategory.products %}
+                            {% if product.product_isdeleted == 0%}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ product.product_name }}</span>
+                                <div>
+                                    <a href="/editProduct/{{ product.product_id }}"><img src="/static/edit.png" alt="Edit Icon" width="20" height="20"></a>
+                                    <a href="/deleteProduct/{{ product.product_id }}"><img src="/static/delete.png" alt="Delete Icon" width="20" height="20"></a>
+                                </div>
+                            </li>
+                            {%else%}
+                            <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: rgba(250, 152, 152, 0.865);">
+                                <span>{{ product.product_name }}</span>
+                                <div>
+                                    <a href="/restoreProduct/{{ product.product_id }}"><img src="/static/restore.png" alt="Restore Icon" width="20" height="20"></a>
+                                </div>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div><br>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="/addProduct/{{productcategory.productcategory_id}}" class="btn btn-primary rounded-circle">&#43;</a>
+                        <!-- <button type="button" class="btn btn-primary rounded-circle">&#43;</button> -->
+                    </div><br>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center">
+                            <a href="/editProductCategory/{{productcategory.productcategory_id}}" class="btn btn-primary custom-button">Edit</a>
+                            <a href="/deleteProductCategory/{{productcategory.productcategory_id}}" class="btn btn-primary custom-button">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%else%}
+            <div class="col-md-4">
+                <div class="card mb-4" style="background-color: rgb(230, 194, 169);">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ productcategory.productcategory_name }} (Deleted)</h5>
+                    </div>
+                    <div class="card-body" style="height: 200px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush" style="background-color: rgb(182, 204, 220);"></ul>
+                            {% for product in productcategory.products %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ product.product_name }}</span>
+                                <!-- <div>
+                                    <a href="/editProduct/{{ product.product_id }}"><img src="/static/edit.png" alt="Edit Icon" width="20" height="20"></a>
+                                    <a href="/deleteProduct/{{ product.product_id }}"><img src="/static/delete.png" alt="Delete Icon" width="20" height="20"></a>
+                                </div> -->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div><br>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center">
+                            <a href="/restoreProductCategory/{{productcategory.productcategory_id}}" class="btn btn-primary custom-button">Restore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <a href="/addProductCategory" class="btn btn-primary btn-primary-right position-fixed bottom-0 end-0 m-3">Add Category</a>
+    </div> 
+    </div>
+</body>
+</html>

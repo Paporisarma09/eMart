@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>User Profile</title>
+    <style>
+        body {
+            background-image: url('/static/background2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+        }
+        .card-header {
+            background-color: rgb(183, 150, 177);
+            font-weight: bold;
+        }
+        .divcolor {
+            background-color: rgb(110, 143, 57);
+        }
+        .divcolor1 {
+            background-color: rgba(166, 184, 194, 0.228);
+            position: relative;
+            height: calc(100vh - 56px); /* Subtracting the navbar height */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light divcolor">
+        <div class="container-fluid">
+            <span class="navbar-text font-weight-bold text-dark">{{user.user_name}}'s Dashboard</span>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/getproductdetailsforuser/{{user.user_id}}" style="color: blue;">Home</a>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="color: blue;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">User Profile</div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label for="username">Username:</label>
+                                </div>
+                                <div class="col-6">
+                                    <span>{{user.user_name}}</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label for="role">Role:</label>
+                                </div>
+                                <div class="col-6">
+                                    <span>{{user.user_role}}</span>
+                                </div>
+                            </div>
+                            <!-- <div class="row mt-3">
+                                <div class="col-12">
+                                    <a href="/change-password" class="btn btn-primary">Change Password</a>
+                                </div>
+                            </div> -->
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

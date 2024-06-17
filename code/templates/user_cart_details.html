@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Cart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('/static/background2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+        }
+        .card-header {
+            background-color: rgb(183, 150, 177);
+            font-weight: bold;
+        }
+        .card-body {
+            height: 120px;;
+            overflow-y: scroll;
+            position: relative;
+        }
+        .divcolor {
+        background-color: rgb(110, 143, 57);
+        }
+        .divcolor1 {
+            background-color: rgba(166, 184, 194, 0.228);
+            position: relative;
+            height: calc(100vh - 56px); /* Subtracting the navbar height */
+        }
+        .btn-primary-right {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 20px;
+        }
+        .custom-button {
+                width: 120px;
+                margin-left: 20px;
+                margin-right: 20px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgb(110, 143, 57);
+            padding: 10px;
+            /* text-align: left; */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light divcolor">
+        <div class="container-fluid">
+            <span class="navbar-text font-weight-bold text-dark">{{user.user_name}}'s Dashboard</span>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user.user_id}}" style="color: blue;">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/getproductdetailsforuser/{{user.user_id}}" style="color: blue;">Home</a>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="color: blue;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% if userProductCartByCategoryDict %}
+    {% for productcategoryname, userCartDetailsByCategory in userProductCartByCategoryDict.items() %}
+    <div class="container mt-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                {{ productcategoryname }}
+            </div>
+            <div class="card-body">
+                {% for userCartDetail in userCartDetailsByCategory %}
+                <div class="row mb-2">
+                    <div class="col-sm-3">{{ userCartDetail.product.product_name }}</div>
+                    <div class="col-sm-3">Quantity: {{ userCartDetail.usercartdetails_productquantity }}</div>
+                    <div class="col-sm-3">Total Price: Rs {{ userCartDetail.usercartdetails_totalamount }}</div>
+                    <div class="col-sm-3 text-end">
+                        <a href="/{{user.user_id}}/reviewAndUpdateUserCartDetails/{{userCartDetail.usercartdetails_id}}" class="btn btn-primary custom-button">Review</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+        <h3>{{ message }}</h3>
+    {% endif %}
+    <div class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-sm-10">
+                    Total Amount:Rs {{sumofproducts}}
+                </div>
+                {% if userProductCartByCategoryDict is defined %}
+                    <div class="col-sm-2 text-sm-center text-md-end">
+                        <a href="/checkoutProducts/{{user.user_id}}" class="btn btn-primary custom-button">Checkout</a>
+                    </div>
+                {% else %}
+                    <div class="col-sm-2 text-sm-center text-md-end">
+                        <a href="#" class="btn btn-primary custom-button" style="opacity: 0.5; pointer-events: none;">Checkout</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>    
+</body>
+</html>

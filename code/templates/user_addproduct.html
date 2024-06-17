@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User product booking</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <title>Add Product</title>
+    <style>
+        body {
+            background-image: url('/static/background2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+        }
+        .divcolor {
+            background-color: rgb(110, 143, 57);
+        }
+        .divcolor1 {
+            background-color: rgba(166, 184, 194, 0.228);
+            height: calc(100vh - 56px); /* Subtracting the navbar height */
+        }
+        .custom-button {
+            width: 120px;
+            /* margin-left: 20px; */
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light divcolor">
+        <div class="container-fluid">
+            <span class="navbar-text font-weight-bold text-dark">User Booking</span>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user.user_id}}" style="color: blue;">Profile</a>
+                </li> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/getproductdetailsforuser/{{user.user_id}}" style="color: blue;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="color: blue;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h3 style="color: rgb(15, 0, 0);margin-top: 20px; text-align: center;">{{product.product_name}}</h1><br><br>
+        <div class="container d-flex justify-content-center">
+            <form class="form" method="post" action="/{{user.user_id}}/addProductToCart/{{product.product_id}}">
+                <div>
+                    <div class="mb-1 row">
+                        <label class="col-sm-6 col-form-label">Availability: {% if product.product_quantity > 0 %}In stock{% else %} Out of Stock{% endif %}</label>
+                    </div>
+                    <div class="mb-2 row">
+                        {% set splitlist = product.product_unit.split('/') %}
+                        <label for="unit" class="col-sm-6 col-form-label">Quantity: ({{ splitlist[1] }})
+                        </label>
+                        <div class="col-sm-12">
+                            <input type="number" class="form-control" style="max-width: 300px;" name="productquantity" required min="1">
+                        </div>
+                    </div>
+                    <div class="mb-1 row">
+                        <label class="col-form-label">Price: ({{product.product_rateperunit}} {{product.product_unit}})</label>
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-md btn-block custom-button" value="Add To Cart">
+                    <br>
+                    {% if error_message %}
+                    <br>
+                    <div class="alert alert-danger" role="alert">
+                        {{ error_message }}
+                    </div>
+                    {% endif %} 
+                </form>
+        </div>  
+</body>
+</html>

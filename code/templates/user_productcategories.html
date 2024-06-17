@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Category</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <style>
+    body {
+            background-image: url('/static/background2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+    }
+    .divcolor {
+        background-color: rgb(110, 143, 57);
+    }
+    .divcolor1 {
+        background-color: rgba(166, 184, 194, 0.228);
+        position: relative;
+        height: calc(100vh - 56px);
+    }
+    .btn-primary-right {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 20px;
+    }
+    .custom-button {
+            width: 120px;
+            margin-left: 20px;
+            margin-right: 20px;
+    }
+    .card-header {
+            background-color: rgb(227, 192, 222);
+            font-weight: bold;
+    }
+    .outofstock-message{
+        color: rgba(198, 69, 69, 0.925); 
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-light divcolor">
+    <div class="container-fluid">
+        <span class="navbar-text font-weight-bold text-dark">{{user.user_name}}'s Dashboard</span>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/profile/{{user.user_id}}" style="color: blue;">Profile</a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-link" href="/getUserCartDetails/{{user.user_id}}" style="color: blue;">Cart {%if numOfCartItems > 0%}({{numOfCartItems}}){%endif%}</a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-link" href="/logout" style="color: blue;">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-3">
+    <form action="/{{user.user_id}}/search" method="POST">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by Product Category or Product name or Product Price or Product Expiry(yyyy-mm-dd)" name="searchquery" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+          </div>
+    </form>
+</div>
+
+<div class="container mt-4">
+    {% if productCategories %}
+        {% for productcategory in productCategories %}
+        {% if productcategory.productcategory_isdeleted == 0 %}
+            <div class="card">
+                <div class="card-header">
+                    {{ productcategory.productcategory_name }}
+                </div>
+                <div class="card-body" style="background-color: rgb(232, 228, 222);">
+                    <div class="row">
+                        {% for product in productcategory.products %}
+                        {% if product.product_isdeleted == 0 %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ product.product_name }}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Rate per Unit: {{ product.product_rateperunit }}</p>
+                                        {% if product.product_quantity == 0 %}
+                                        <p class="card-text outofstock-message">Out of Stock</p>
+                                        {% else %}
+                                        <div class="d-flex justify-content-center">
+                                            <a href="/{{user.user_id}}/addProductToCart/{{product.product_id}}" class="btn btn-primary custom-button">Add to cart</a>
+                                            <a href="/{{user.user_id}}/buyProduct/{{product.product_id}}" class="btn btn-primary custom-button">Buy</a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <br><br>
+        {% endfor %}
+        {% elif retrievedproductcategoriesdict %}
+        {% for productcategoryname, products in retrievedproductcategoriesdict.items() %}
+            <div class="card">
+                <div class="card-header">
+                    {{ productcategoryname }}
+                </div>
+                <div class="card-body" style="background-color: rgb(232, 228, 222);">
+                    <div class="row">
+                        {% for product in products %}
+                        {% if product.product_isdeleted == 0 %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        {{ product.product_name }}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Rate per Unit: {{ product.product_rateperunit }}</p>
+                                        {% if product.product_quantity == 0 %}
+                                        <p class="card-text outofstock-message">Out of Stock</p>
+                                        {% else %}
+                                        <div class="d-flex justify-content-center">
+                                            <a href="/{{user.user_id}}/addProductToCart/{{product.product_id}}" class="btn btn-primary custom-button">Add to cart</a>
+                                            <a href="/{{user.user_id}}/buyProduct/{{product.product_id}}" class="btn btn-primary custom-button">Buy</a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        {% endfor %}
+    {% endif %}
+    {% if searchErrorMessage %}
+            <br>
+            <div class="alert alert-danger" role="alert">
+                {{ searchErrorMessage }}
+            </div>
+    {% endif %}
+</div>
+</body>
+</html>

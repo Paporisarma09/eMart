@@ -1,0 +1,784 @@
+openapi: 3.0.0
+info:
+  title: eMart 
+  version: 1.0.0
+  description: API for eMart APP using Flask-Restful in OpenApi Standards
+    <h3> User Table Schema </h3>
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>user_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>username</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>
+      <tr>
+        <td>user_password</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>user_role</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>         
+    </tbody>
+    </table>
+
+    <h3> ProductCategory Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>productcategory_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>productcategory_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>productcategory_isdeleted</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>      
+    </tbody>
+    </table>
+    <h3> Product Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>product_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>product_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>productcategory_id</td>
+        <td>Integer</td>
+        <td>Foreign Key (ProductCategory.productcategory_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>product_unit</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>product_rateperunit</td>
+        <td>Float</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>product_quantity</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>product_expirydate</td>
+        <td>DateTime</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>productproduct_isdeleted_expirydate</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+
+
+    <h3> UserCartDetails Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>usercartdetails_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>user_id</td>
+        <td>Integer</td>
+        <td>Foreign Key (User.user_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>product_id</td>
+        <td>Integer</td>
+        <td>Foreign Key (Product.product_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>usercartdetails_productquantity</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>usercartdetails_totalamount</td>
+        <td>Float</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>usercartdetails_cartstatus</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>usercartdetails_checkoutdatetime</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+
+    <h3> Error Codes </h3> 
+    <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>User</td>
+        <td>US1001</td>
+        <td>Invalid password.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>US1002</td>
+        <td>Username is required.</td>
+      </tr>
+       <tr>
+        <td>User</td>
+        <td>US1003</td>
+        <td>Password is required.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>US1004</td>
+        <td>User Role is required.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>US1005</td>
+        <td>The length of password should be at least 8 characters long.</td>
+      </tr> 
+      <tr>
+        <td>User</td>
+        <td>US1006</td>
+        <td>User password cannot be same as previous password.</td>
+      </tr> 
+      <tr>
+        <td>ProductCategory</td>
+        <td>PC1001</td>
+        <td>ProductCategoryName is required.</td>
+      </tr> 
+      <tr>
+        <td>ProductCategory</td>
+        <td>PC1002</td>
+        <td>ProductCategoryId is required.</td>
+      </tr> 
+      <tr>
+        <td>ProductCategory</td>
+        <td>PC1003</td>
+        <td>ProductCategory is associated with products.</td>
+      </tr>
+      <tr>
+        <td>Product</td>
+        <td>PR1001</td>
+        <td>ProductId is required.</td>
+      </tr> 
+      <tr>
+        <td>Product</td>
+        <td>PR1002</td>
+        <td>ProductName is required.</td>
+      </tr> 
+      <tr>
+        <td>Product</td>
+        <td>PR1003</td>
+        <td>Associated ProductCateoryId is required.</td>
+      </tr> 
+      <tr>
+        <td>Product</td>
+        <td>PR1004</td>
+        <td>Product Unit is required.</td>
+      </tr> 
+      <tr>
+        <td>Product</td>
+        <td>PR1005</td>
+        <td>Product Quantity is required.</td>
+      </tr> 
+      <tr>
+        <td>Product</td>
+        <td>PR1006</td>
+        <td>Product Rate Per Unit is required.</td>
+      </tr> 
+      <tr>
+        <td>Product</td>
+        <td>PR1007</td>
+        <td>Product is associated with user cart.</td>
+      </tr> 
+
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1001</td>
+        <td>UserId is required.</td>
+      </tr> 
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1002</td>
+        <td>ProductId is required.</td>
+      </tr> 
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1003</td>
+        <td>Product Qunatity should be greater than 0.</td>
+      </tr> 
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1004</td>
+        <td>Please select a quantity lesser than Products available quantity</td>
+      </tr> 
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1005</td>
+        <td>UserCartDetailsId is required.</td>
+      </tr> 
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1006</td>
+        <td>Cannot update the user cart details, as it is already checked out.</td>
+      </tr> 
+      <tr>
+        <td>UserCartDetails</td>
+        <td>USC1007</td>
+        <td>There is no change in the product quantity.</td>
+      </tr> 
+    </tbody>
+    </table>
+servers:
+  - url: http://localhost:5000/
+paths:
+  /api/user/{username}/{role}:
+    get:
+      description: Opeation to get user by username and role
+      tags:
+        - "User"
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user to retrieve.
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          description: The role of the user to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found.
+    delete:
+      description: Operation to delete an existing user.
+      tags:
+        - "User"
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: The username of the user to retrieve.
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          description: The password of the user to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User succesfully delted.
+        '400':
+          description: Bad Request.
+        '409':
+          description: Username already exists.
+  /api/user:
+    post:
+      description: Create a new user.
+      tags:
+        - "User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+              required:
+                - username
+                - password
+                - role
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request.
+        '409':
+          description: Username already exists.
+    put:
+      description: Update an existing user.
+      tags:
+        - "User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                newpassword:
+                  type: string
+                role:
+                  type: string
+              required:
+                - username
+                - password
+                - role
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request.
+        '404':
+          description: User not found.
+  /api/productcategory/{productcategoryid}:
+    get:
+      description: Operation to get a product category by Id
+      tags:
+        - "ProductCategory"
+      parameters:
+        - name: productcategoryid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategory'
+        '404':
+          description: Product Category not found
+    delete:
+      description: Operation to delete an existing product category
+      tags:
+        - "ProductCategory"
+      parameters:
+        - name: productcategoryid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Product Category not found
+        '409':
+          description: Product Category is associated with products
+          
+  /api/productcategory:
+    post:
+      description: Create a new product category
+      tags:
+        - "ProductCategory"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productcategoryname:
+                  type: string
+              required:
+                - productcategoryname
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategory'
+        '400':
+          description: Bad Request
+        '409':
+          description: Product Category already exists
+    put:
+      description: Operation to update an existing product category
+      tags:
+        - "ProductCategory"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productcategoryid:
+                  type: integer
+                newproductcategoryname:
+                  type: string
+              required:
+                - productcategoryid
+                - newproductcategoryname
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategory'
+        '400':
+          description: Bad Request
+        '404':
+          description: Product Category not found
+  /api/product/{productid}:
+    get:
+      description: Operation to get a product by Id
+      tags:
+        - "Product"
+      parameters:
+        - name: productid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+    delete:
+      description: Operation to delete an existing product
+      tags:
+        - "Product"
+      parameters:
+        - name: productid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Product not found
+        '409':
+          description: Product is associated with user cart
+  /api/product:
+    post:
+      description: Opertaion to create a new product
+      tags:
+        - "Product"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productname:
+                  type: string
+                productcategoryid:
+                  type: integer
+                rateperunit:
+                  type: number
+                  format: float
+                quantity:
+                  type: integer
+                expirydate:
+                  type: string
+                  format: date
+                  example: 2023-08-09
+                unit:
+                  type: string
+              required:
+                - productname
+                - productcategoryid
+                - rateperunit
+                - quantity
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCategory'
+        '400':
+          description: Bad Request
+        '409':
+          description: Product already exists
+    put:
+      description: Opertaion to update an existing product
+      tags:
+        - "Product"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productid:
+                  type: integer
+                productname:
+                  type: string
+                newunit:
+                  type: string
+                newrateperunit:
+                  type: number
+                  format: float
+                newquantity:
+                  type: integer
+                newexpirydate:
+                  type: string
+                  format: date
+                  example: 2023-08-09
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '404':
+          description: Product not found
+  /api/usercartdetails/{id}:
+    get:
+      description: Operation to get user cart details
+      tags:
+        - "UserCartDetails"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserCartDetails'
+        '404':
+          description: User cart not found
+          content:
+            application/json:
+              example:
+                message: User doesn't have any product in the cart
+    delete:
+      description: Delete user's cart details
+      tags:
+        - "UserCartDetails"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user cart details
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: User Cart Details successfully deleted
+        '404':
+          description: User cart details not found
+          content:
+            application/json:
+              example:
+                message: User cart details not found    
+  /api/usercartdetails:
+    post:
+      description: Operation to add product to user's cart
+      tags:
+        - "UserCartDetails"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userid:
+                  type: integer
+                productid:
+                  type: integer
+                productquantity:
+                  type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCartDetails'
+        '400':
+          description: Bad request
+    put:
+      description: Operation to update user's cart details
+      tags:
+        - "UserCartDetails"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usercartdetailsid:
+                  type: integer
+                productquantity:
+                  type: integer
+                ischeckout:
+                  type: boolean
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCartDetails'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                message: Invalid request data or user cart details not found
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        user_name:
+          type: string
+        user_role:
+          type: string
+    ProductCategory:
+      type: object
+      properties:
+        productcategory_id:
+          type: integer
+        productcategory_name:
+          type: string
+        productcategory_isdeleted:
+          type: integer
+    Product:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        product_name:
+          type: string
+        productcategory_id:
+          type: string
+        product_unit:
+          type: string
+        product_rateperunit:
+          type: number
+          format: float
+        product_quantity:
+          type: integer
+        product_expirydate:
+          type: string
+          format: date
+        product_isdeleted:
+          type: integer
+    UserCartDetails:
+      type: object
+      properties:
+        usercartdetails_id:
+          type: integer
+        user_id:
+          type: integer
+        product_id:
+          type: integer
+        usercartdetails_productquantity:
+          type: integer
+        usercartdetails_totalamount:
+          type: number
+          format: float
+        usercartdetails_cartstatus:
+          type: integer
+        usercartdetails_checkoutdatetime:
+          type: string

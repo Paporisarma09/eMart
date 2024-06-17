@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Category</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <title>Add Category</title>
+    <style>
+        body {
+            background-image: url('/static/background2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            min-height: 100vh;
+        }
+        .divcolor {
+            background-color: rgb(110, 143, 57);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand navbar-light divcolor">
+        <div class="container-fluid">
+            <span class="navbar-text font-weight-bold text-dark">Admin Dashboard</span>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/getproductdetailsforadmin" style="color: blue;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" style="color: blue;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav><br><br>
+    <div class="container d-flex justify-content-center">
+        <form class="form" method="post" action="/addProductCategory">
+            <div>
+                <div class="mb-1 row">
+                    <label for="categoryName" class="col-sm-6 col-form-label">Category Name:</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control" name="productCategoryName">
+                    </div>
+                </div>
+                <br>
+                <input type="submit" class="btn btn-primary btn-md btn-block" value="Save">
+            </div>
+        </form>
+    </div>    
+</body>
+</html>
