@@ -16,6 +16,7 @@ create_user_parser.add_argument('username')
 create_user_parser.add_argument('password')
 create_user_parser.add_argument('role')
 
+
 update_user_parser = reqparse.RequestParser()
 update_user_parser.add_argument('username')
 update_user_parser.add_argument('newpassword')
