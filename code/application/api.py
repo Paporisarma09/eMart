@@ -9,6 +9,8 @@ user_fields = {
     "user_name": fields.String,
     "user_role": fields.String
 }
+
+
 create_user_parser = reqparse.RequestParser()
 create_user_parser.add_argument('username')
 create_user_parser.add_argument('password')
