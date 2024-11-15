@@ -28,6 +28,7 @@ class Product(db.Model):
     product_expirydate = db.Column(db.DateTime, nullable = True)
     product_isdeleted = db.Column(db.Integer, nullable = False)
     
+    
 class UserCartDetails(db.Model):
     __tablename__ = 'usercartdetails'
     usercartdetails_id = db.Column(db.Integer, primary_key=True)
