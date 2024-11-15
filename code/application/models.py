@@ -15,6 +15,7 @@ class ProductCategory(db.Model):
     productcategory_name = db.Column(db.String, nullable = False)
     productcategory_isdeleted = db.Column(db.Integer, nullable = False)
     products = db.relationship('Product', backref = "productcategory")
+    
 
 class Product(db.Model):
     __tablename__ = 'product'
